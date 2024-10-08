@@ -14,19 +14,19 @@ public class Main {
     private static FileManager fileManager = new FileManager();
     private static Menu menu = new Menu();
 
-    //user login. to change with database incorporation.
+    //User Login. To change with database incorporation.
     private static Map<Integer, User> users = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
     private static boolean isAuthenticated = false;
 
     static {
-        // admin users
+        // Admin users
         users.put(1, new User(1, "Berti", "Monica", "password123"));
         users.put(2, new User(2, "Admin", "User", "admin123"));
     }
 
     public static void main(String[] args) {
-        // login screen
+        // Login screen
         while (!isAuthenticated) {
             if (login()) {
                 isAuthenticated = true;
@@ -51,11 +51,12 @@ public class Main {
         }
         return false;
     }
-
+    // Main Menu
     private static void mainMenu() {
         boolean running = true;
         while (running) {
             menu.displayMenu();
+            //Menu Selection
             int choice = menu.selectOption();
             switch (choice) {
                 case 1:
@@ -80,6 +81,7 @@ public class Main {
         scanner.close();
     }
 
+    //Menu option 1: Add Patient
     private static void addPatient(Scanner scanner) {
         System.out.println("Select input method: 1 for manual, 2 for file");
         int inputMethod = scanner.nextInt();
@@ -132,6 +134,7 @@ public class Main {
         }
     }
 
+    //Menu option 1: Add patient via file
     private static void readPatientFromFile(String filePath) throws IOException, ParseException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
@@ -161,9 +164,58 @@ public class Main {
 
 
     private static void addTest(Scanner scanner) {
-        // Simulate adding a test
-        System.out.println("Enter test details...");
-        // Implementation similar to addPatient
+        System.out.println("Select Test Type:");
+        for (TestType type : TestType.values()) {
+            System.out.println(type.ordinal() + 1 + ". " + type);
+        }
+        int choice = Integer.parseInt(scanner.nextLine());
+        TestType selectedType = TestType.values()[choice - 1];
+
+        // TestID
+        int testID = TestList.getNextTestId();
+
+        System.out.println("Enter Patient ID:");
+        int patientID = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Enter Device Type:");
+        String deviceType = scanner.nextLine();
+
+        System.out.println("Enter Device Serial Number:");
+        String deviceSerialNumber = scanner.nextLine();
+
+        System.out.println("Enter Operator ID:");
+        int operatorID = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Enter Test Date and Time (format YYYY-MM-DD HH:MM):");
+        String datetimeInput = scanner.nextLine();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date testDateTime;
+        try {
+            testDateTime = sdf.parse(datetimeInput);
+        } catch (ParseException e) {
+            System.out.println("Invalid date and time format. Please enter the date and time in the format YYYY-MM-DD HH:MM.");
+            return;
+        }
+
+        System.out.println("Enter Test Result (as appropriate for the test type):");
+        String result = scanner.nextLine();
+
+
+        Test test = createTest(testID, selectedType, patientID, deviceType, deviceSerialNumber, operatorID, testDateTime, result);
+        tests.addTest(test);
+        System.out.println("Test added successfully!");
+    }
+
+    private static Test createTest(int testID, TestType type, int patientID, String deviceType, String deviceSerialNumber, int operatorID, Date testDateTime, String result) {
+        switch (type) {
+            case GLUCOSE:
+                int glucoseResult = Integer.parseInt(result);
+                return new GlucoseTest(testID, patientID, "Glucose", deviceType, deviceSerialNumber, operatorID, testDateTime, glucoseResult);
+            // Additional cases for other test types
+            default:
+                System.out.println("Unsupported test type.");
+                return null;
+        }
     }
 
     private static void listPatients() {
