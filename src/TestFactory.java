@@ -3,12 +3,13 @@ import java.util.Map;
 
 public class TestFactory {
     public static Test createTest(TestType type, Map<String, Object> parameters) {
+        String testPanel = type.getTestPanel();
         switch (type) {
             case GLUCOSE:
                 return new GlucoseTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),

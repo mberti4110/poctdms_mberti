@@ -162,61 +162,74 @@ public class Main {
         System.out.println("Patients added successfully from file!");
     }
 
-
+    //Menu option 2: Add test
     private static void addTest(Scanner scanner) {
         System.out.println("Select Test Type:");
         for (TestType type : TestType.values()) {
-            System.out.println(type.ordinal() + 1 + ". " + type);
+            System.out.println((type.ordinal() + 1) + ". " + type);
         }
-        int choice = Integer.parseInt(scanner.nextLine());
-        TestType selectedType = TestType.values()[choice - 1];
+        int choice = Integer.parseInt(scanner.nextLine()) - 1;
+        if (choice < 0 || choice >= TestType.values().length) {
+            System.out.println("Invalid test type selected. Please try again.");
+            return;
+        }
+        TestType selectedType = TestType.values()[choice];
 
-        // TestID
-        int testID = TestList.getNextTestId();
+        // Initialize parameters map
+        Map<String, Object> parameters = new HashMap<>();
+
+        // TestID is generated
+        parameters.put("testID", TestList.getNextTestId());
 
         System.out.println("Enter Patient ID:");
         int patientID = Integer.parseInt(scanner.nextLine());
-
+        // Check if patient exists
+        if (!patients.exists(patientID)) {
+            System.out.println("No patient found with ID: " + patientID + ". Please add the patient first.");
+            return;
+        }
+        parameters.put("patientID", patientID);
         System.out.println("Enter Device Type:");
-        String deviceType = scanner.nextLine();
+        parameters.put("deviceType", scanner.nextLine());
 
         System.out.println("Enter Device Serial Number:");
-        String deviceSerialNumber = scanner.nextLine();
+        parameters.put("deviceID", scanner.nextLine());
 
         System.out.println("Enter Operator ID:");
-        int operatorID = Integer.parseInt(scanner.nextLine());
+        parameters.put("operatorID", Integer.parseInt(scanner.nextLine()));
 
         System.out.println("Enter Test Date and Time (format YYYY-MM-DD HH:MM):");
-        String datetimeInput = scanner.nextLine();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date testDateTime;
         try {
-            testDateTime = sdf.parse(datetimeInput);
+            parameters.put("testDateTime", sdf.parse(scanner.nextLine()));
         } catch (ParseException e) {
             System.out.println("Invalid date and time format. Please enter the date and time in the format YYYY-MM-DD HH:MM.");
             return;
         }
 
         System.out.println("Enter Test Result (as appropriate for the test type):");
+        // Parse the result depending on the test type (int or float)
         String result = scanner.nextLine();
+        try {
+            if (selectedType == TestType.GLUCOSE || selectedType == TestType.SODIUM || selectedType == TestType.CHLORIDE) {
+                parameters.put(selectedType.name().toLowerCase() + "Result", Integer.parseInt(result));
+            } else {
+                parameters.put(selectedType.name().toLowerCase() + "Result", Float.parseFloat(result));
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid format for test result. Please enter a valid number.");
+            return;
+        }
 
-
-        Test test = createTest(testID, selectedType, patientID, deviceType, deviceSerialNumber, operatorID, testDateTime, result);
-        tests.addTest(test);
-        System.out.println("Test added successfully!");
-    }
-
-    private static Test createTest(int testID, TestType type, int patientID, String deviceType, String deviceSerialNumber, int operatorID, Date testDateTime, String result) {
-        switch (type) {
-            case GLUCOSE:
-                int glucoseResult = Integer.parseInt(result);
-                return new GlucoseTest(testID, patientID, "Glucose", deviceType, deviceSerialNumber, operatorID, testDateTime, glucoseResult);
-            // Additional cases for other test types
-            default:
-                System.out.println("Unsupported test type.");
-                return null;
+        try {
+            Test test = TestFactory.createTest(selectedType, parameters);
+            tests.addTest(test);
+            System.out.println("Test added successfully!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error creating test: " + e.getMessage());
         }
     }
+
 
     private static void listPatients() {
         System.out.println("Listing all patients:");

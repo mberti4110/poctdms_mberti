@@ -9,4 +9,9 @@ public class GlucoseTest extends Test {
     }
 
     public int getGlucoseResult() { return glucoseResult; }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nGlucose Result: " + glucoseResult + " mg/dL";
+    }
 }
