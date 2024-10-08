@@ -1,0 +1,10 @@
+public enum TestType {
+    GLUCOSE,
+    SODIUM,
+    CHLORIDE,
+    POTASSIUM,
+    CALCIUM,
+    LACTICACID,
+    ELECTROLYTES,
+    HEMATOLOGY
+}
