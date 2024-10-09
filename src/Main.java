@@ -164,6 +164,9 @@ public class Main {
         }
         reader.close();
         System.out.println("Patients added successfully from file!");
+        // Clear scanner
+        scanner.nextLine();
+
     }
 
     //Menu option 2: Add test
