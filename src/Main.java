@@ -184,18 +184,28 @@ public class Main {
 
         // Initialize parameters map
         Map<String, Object> parameters = new HashMap<>();
+        parameters.put("testID", TestList.getNextTestId()); // TestID is generated
+        collectTestDetails(scanner, parameters, selectedType);
 
-        // TestID is generated
-        parameters.put("testID", TestList.getNextTestId());
+        try {
+            Test test = TestFactory.createTest(selectedType, parameters);
+            tests.addTest(test);
+            System.out.println("Test added successfully!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error creating test: " + e.getMessage());
+        }
+    }
 
+    private static void collectTestDetails(Scanner scanner, Map<String, Object> parameters, TestType selectedType) {
         System.out.println("Enter Patient ID:");
         int patientID = Integer.parseInt(scanner.nextLine());
-        // Check if patient exists
+        // Verify patient exists
         if (!patients.exists(patientID)) {
             System.out.println("No patient found with ID: " + patientID + ". Please add the patient first.");
             return;
         }
         parameters.put("patientID", patientID);
+
         System.out.println("Enter Device Type:");
         parameters.put("deviceType", scanner.nextLine());
 
@@ -205,49 +215,46 @@ public class Main {
         System.out.println("Enter Operator ID:");
         parameters.put("operatorID", Integer.parseInt(scanner.nextLine()));
 
-        System.out.println("Enter Test Date and Time (format YYYY-MM-DD HH:MM):");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        sdf.setLenient(false); // Important to avoid converting invalid dates
-        Date testDateTime;
+        sdf.setLenient(false);
+        System.out.println("Enter Test Date and Time (format YYYY-MM-DD HH:MM):");
         try {
-            testDateTime = sdf.parse(scanner.nextLine());
-            Date currentDate = new Date();
-            Date earliestDate = sdf.parse("2012-01-01 00:00");
-
-            if (testDateTime.after(currentDate)) {
-                System.out.println("The date cannot be in the future. Please enter a correct date and time.");
-                return;
-            }
-            if (testDateTime.before(earliestDate)) {
-                System.out.println("The date cannot be earlier than January 1, 2012. Please enter a correct date and time.");
-                return;
-            }
+            Date testDateTime = sdf.parse(scanner.nextLine());
+            validateTestDateTime(testDateTime);
             parameters.put("testDateTime", testDateTime);
         } catch (ParseException e) {
             System.out.println("Invalid date and time format. Please enter the date and time in the format YYYY-MM-DD HH:MM.");
             return;
         }
 
-        System.out.println("Enter Test Result (as appropriate for the test type):");
-        // Parse the result depending on the test type (int or float)
-        String result = scanner.nextLine();
-        try {
+        if (selectedType == TestType.ELECTROLYTES) {
+            System.out.println("Enter Sodium Result:");
+            parameters.put("sodiumResult", Integer.parseInt(scanner.nextLine()));
+            System.out.println("Enter Potassium Result:");
+            parameters.put("potassiumResult", Float.parseFloat(scanner.nextLine()));
+            System.out.println("Enter Calcium Result:");
+            parameters.put("calciumResult", Float.parseFloat(scanner.nextLine()));
+            System.out.println("Enter Chloride Result:");
+            parameters.put("chlorideResult", Integer.parseInt(scanner.nextLine()));
+        } else {
+            System.out.println("Enter Test Result (as appropriate for the test type):");
+            String result = scanner.nextLine();
             if (selectedType == TestType.GLUCOSE || selectedType == TestType.SODIUM || selectedType == TestType.CHLORIDE) {
                 parameters.put(selectedType.name().toLowerCase() + "Result", Integer.parseInt(result));
             } else {
                 parameters.put(selectedType.name().toLowerCase() + "Result", Float.parseFloat(result));
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid format for test result. Please enter a valid number.");
-            return;
         }
+    }
 
-        try {
-            Test test = TestFactory.createTest(selectedType, parameters);
-            tests.addTest(test);
-            System.out.println("Test added successfully!");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error creating test: " + e.getMessage());
+    private static void validateTestDateTime(Date testDateTime) throws ParseException {
+        Date currentDate = new Date();
+        Date earliestDate = new SimpleDateFormat("yyyy-MM-dd").parse("2012-01-01");
+        if (testDateTime.after(currentDate)) {
+            throw new ParseException("The date cannot be in the future. Please enter a correct date and time.", 0);
+        }
+        if (testDateTime.before(earliestDate)) {
+            throw new ParseException("The date cannot be earlier than January 1, 2012. Please enter a correct date and time.", 0);
         }
     }
 

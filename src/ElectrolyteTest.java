@@ -18,4 +18,12 @@ public class ElectrolyteTest extends Test {
     public float getPotassiumResult() { return potassiumResult; }
     public float getCalciumResult() { return calciumResult; }
     public int getChlorideResult() { return chlorideResult; }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nSodium Result: " + sodiumResult + " mmol/L" +
+                "\nPotassium Result: " + potassiumResult + " mmol/L" +
+                "\nCalcium Result: " + calciumResult + " mg/dL" +
+                "\nChloride Result: " + chlorideResult + "  mEq/L";
+    }
 }
