@@ -70,7 +70,7 @@ public class TestFactory {
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),
                         (Date) parameters.get("testDateTime"),
-                        (Float) parameters.get("lacticAcidResult")
+                        (Float) parameters.get("lacticacidResult")
                 );
             case ELECTROLYTES:
                 return new ElectrolyteTest(

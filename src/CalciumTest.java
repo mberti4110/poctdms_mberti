@@ -9,4 +9,9 @@ public class CalciumTest extends Test {
     }
 
     public float getCalciumResult() { return calciumResult; }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nCalcium Result: " + calciumResult + " mg/dL";
+    }
 }

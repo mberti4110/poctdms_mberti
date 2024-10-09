@@ -9,4 +9,9 @@ public class PotassiumTest extends Test {
     }
 
     public float getPotassiumResult() { return potassiumResult; }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nPotassium Result: " + potassiumResult + " mmol/L";
+    }
 }

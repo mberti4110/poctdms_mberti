@@ -9,4 +9,9 @@ public class ChlorideTest extends Test {
     }
 
     public int getChlorideResult() { return chlorideResult; }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nChloride Result: " + chlorideResult + " mEq/L";
+    }
 }

@@ -9,4 +9,9 @@ public class LacticAcidTest extends Test {
     }
 
     public float getLacticAcidResult() { return lacticAcidResult; }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nLactic Acid Result: " + lacticAcidResult + " mmol/L";
+    }
 }
