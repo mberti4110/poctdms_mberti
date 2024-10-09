@@ -20,7 +20,7 @@ public class TestFactory {
                 return new SodiumTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),
@@ -32,7 +32,7 @@ public class TestFactory {
                 return new PotassiumTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),
@@ -43,7 +43,7 @@ public class TestFactory {
                 return new CalciumTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),
@@ -54,7 +54,7 @@ public class TestFactory {
                 return new ChlorideTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),
@@ -65,7 +65,7 @@ public class TestFactory {
                 return new LacticAcidTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),
@@ -76,7 +76,7 @@ public class TestFactory {
                 return new ElectrolyteTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),
@@ -90,7 +90,7 @@ public class TestFactory {
                 return new HematologyTest(
                         (Integer) parameters.get("testID"),
                         (Integer) parameters.get("patientID"),
-                        (String) parameters.get("testPanel"),
+                        testPanel,
                         (String) parameters.get("deviceType"),
                         (String) parameters.get("deviceID"),
                         (Integer) parameters.get("operatorID"),

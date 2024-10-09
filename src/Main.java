@@ -222,6 +222,7 @@ public class Main {
                 System.out.println("The date cannot be earlier than January 1, 2012. Please enter a correct date and time.");
                 return;
             }
+            parameters.put("testDateTime", testDateTime);
         } catch (ParseException e) {
             System.out.println("Invalid date and time format. Please enter the date and time in the format YYYY-MM-DD HH:MM.");
             return;

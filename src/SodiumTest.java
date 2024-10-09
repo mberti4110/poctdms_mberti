@@ -9,4 +9,9 @@ public class SodiumTest extends Test {
     }
 
     public int getSodiumResult() { return sodiumResult; }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nSodium Result: " + sodiumResult + " mg/dL";
+    }
 }
