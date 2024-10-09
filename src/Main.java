@@ -142,10 +142,14 @@ public class Main {
 
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(",");
-            // File format: ID,LastName,FirstName,MiddleName,DOB,Phone,Address
+            // File format: LastName, MiddleName, FirstName,MiddleName,DOB,Phone,Address
+            if (parts.length != 6) {
+                System.out.println("Skipping malformed line: " + line);
+                continue;
+            }
             String lastName = parts[0].trim();
             String firstName = parts[1].trim();
-            String middleName = parts[2].trim().equals("none") ? null : parts[3].trim();
+            String middleName = parts[2].trim().equals("none") ? null : parts[2].trim();
             Date dateOfBirth = sdf.parse(parts[3].trim());
             String phoneNumber = parts[4].trim();
             String homeAddress = parts[5].trim();
@@ -200,8 +204,21 @@ public class Main {
 
         System.out.println("Enter Test Date and Time (format YYYY-MM-DD HH:MM):");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        sdf.setLenient(false); // Important to avoid converting invalid dates
+        Date testDateTime;
         try {
-            parameters.put("testDateTime", sdf.parse(scanner.nextLine()));
+            testDateTime = sdf.parse(scanner.nextLine());
+            Date currentDate = new Date();
+            Date earliestDate = sdf.parse("2012-01-01 00:00");
+
+            if (testDateTime.after(currentDate)) {
+                System.out.println("The date cannot be in the future. Please enter a correct date and time.");
+                return;
+            }
+            if (testDateTime.before(earliestDate)) {
+                System.out.println("The date cannot be earlier than January 1, 2012. Please enter a correct date and time.");
+                return;
+            }
         } catch (ParseException e) {
             System.out.println("Invalid date and time format. Please enter the date and time in the format YYYY-MM-DD HH:MM.");
             return;
