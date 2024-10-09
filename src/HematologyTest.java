@@ -21,7 +21,7 @@ public class HematologyTest extends Test {
     @Override
     public String toString() {
         return super.toString() +
-                "\nHematocrit Result: " + hematocritResult +
-                "\nHemoglobin Result: " + hemoglobinResult;
+                "\nHematocrit Result: " + hematocritResult + "%" +
+                "\nHemoglobin Result: " + hemoglobinResult + " g/dL";
     }
 }

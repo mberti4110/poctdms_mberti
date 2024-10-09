@@ -236,8 +236,15 @@ public class Main {
             parameters.put("calciumResult", Float.parseFloat(scanner.nextLine()));
             System.out.println("Enter Chloride Result:");
             parameters.put("chlorideResult", Integer.parseInt(scanner.nextLine()));
-        } else {
-            System.out.println("Enter Test Result (as appropriate for the test type):");
+        } else if(selectedType == TestType.HEMATOLOGY) {
+            System.out.println("Enter Hematocrit Result (%):");
+            parameters.put("hematocritResult", Integer.parseInt(scanner.nextLine()));
+
+            System.out.println("Enter Hemoglobin Result (g/dL):");
+            parameters.put("hemoglobinResult", Float.parseFloat(scanner.nextLine()));
+        }
+        else {
+            System.out.println("Enter Test Result:");
             String result = scanner.nextLine();
             if (selectedType == TestType.GLUCOSE || selectedType == TestType.SODIUM || selectedType == TestType.CHLORIDE) {
                 parameters.put(selectedType.name().toLowerCase() + "Result", Integer.parseInt(result));
