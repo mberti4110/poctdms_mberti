@@ -86,7 +86,7 @@ public class Menu {
                     editPatient(scanner);
                     break;
                 case 3:
-                    //deletePatient();
+                    deletePatient(scanner);
                     break;
                 case 4:
                     listPatients();
@@ -218,7 +218,7 @@ public class Menu {
 
     }
 
-    //Menu option: Edit patient
+    //Patient Menu option: Edit patient
     private static void editPatient(Scanner scanner) {
         System.out.println("Enter the Patient ID to edit:");
         int patientID = Integer.parseInt(scanner.nextLine());
@@ -294,6 +294,17 @@ public class Menu {
         }
     }
 
+    //Patient Menu option: delete patient
+    private static void deletePatient(Scanner scanner) {
+        System.out.println("Enter Patient ID to delete:");
+        int patientID = Integer.parseInt(scanner.nextLine());
+        boolean isDeleted = patients.deletePatient(patientID);
+        if (isDeleted) {
+            System.out.println("Patient deleted successfully.");
+        } else {
+            System.out.println("Patient not found.");
+        }
+    }
     //Menu option 2: Add test
     private static void addTest() {
         System.out.println("Select Test Type:");

@@ -12,11 +12,22 @@ public class PatientList {
         patientList.put(id, patient);
         patientList.put(patient.getPatientID(), patient);
     }
+
+    // delete patient
+
     //check if patient exists
     public boolean exists(int patientId) {
         return patientList.containsKey(patientId);
     }
 
+    public boolean deletePatient(int patientID) {
+        if (patientList.containsKey(patientID)) {
+            patientList.remove(patientID);
+            return true;
+        } else {
+            return false;
+        }
+    }
     public Patient getPatientById(int patientID) {
         return patientList.get(patientID);
     }
