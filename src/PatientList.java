@@ -17,6 +17,10 @@ public class PatientList {
         return patientList.containsKey(patientId);
     }
 
+    public Patient getPatientById(int patientID) {
+        return patientList.get(patientID);
+    }
+
     public void removePatient(int patientID) {
         patientList.remove(patientID);
     }

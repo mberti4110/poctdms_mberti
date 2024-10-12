@@ -22,6 +22,30 @@ public class Patient {
         this.patientID = patientID;
     }
 
+    public void setPatientLastName(String patientLastName) {
+        this.patientLastName = patientLastName;
+    }
+
+    public void setPatientFirstName(String patientFirstName) {
+        this.patientFirstName = patientFirstName;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public void setPatientMiddleName(String patientMiddleName) {
+        this.patientMiddleName = patientMiddleName;
+    }
+
     public int getPatientID() { return patientID; }
     public String getPatientLastName() { return patientLastName; }
     public String getPatientMiddleName() { return patientMiddleName; }

@@ -83,7 +83,7 @@ public class Menu {
                     addPatient();
                     break;
                 case 2:
-                    //editPatient();
+                    editPatient(scanner);
                     break;
                 case 3:
                     //deletePatient();
@@ -216,6 +216,82 @@ public class Menu {
         // Clear scanner
         scanner.nextLine();
 
+    }
+
+    //Menu option: Edit patient
+    private static void editPatient(Scanner scanner) {
+        System.out.println("Enter the Patient ID to edit:");
+        int patientID = Integer.parseInt(scanner.nextLine());
+
+        // Check if patient exists
+        Patient patient = patients.getPatientById(patientID); // Assuming getPatientById() exists
+        if (patient == null) {
+            System.out.println("Patient not found with ID: " + patientID);
+            return;
+        }
+
+        System.out.println("Editing Patient: " + patient);
+
+        boolean editing = true;
+        while (editing) {
+            System.out.println("\nSelect the field to edit:");
+            System.out.println("1. Last Name");
+            System.out.println("2. First Name");
+            System.out.println("3. Middle Name");
+            System.out.println("4. Date of Birth");
+            System.out.println("5. Phone Number");
+            System.out.println("6. Home Address");
+            System.out.println("7. Save & Exit");
+            System.out.println("8. Cancel");
+
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter new Last Name:");
+                    patient.setPatientLastName(scanner.nextLine());
+                    break;
+                case 2:
+                    System.out.println("Enter new First Name:");
+                    patient.setPatientFirstName(scanner.nextLine());
+                    break;
+                case 3:
+                    System.out.println("Enter new Middle Name (or type 'none' if no middle name):");
+                    String middleName = scanner.nextLine();
+                    patient.setPatientMiddleName("none".equalsIgnoreCase(middleName) ? null : middleName);
+                    break;
+                case 4:
+                    System.out.println("Enter new Date of Birth (format YYYY-MM-DD):");
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date dob = sdf.parse(scanner.nextLine());
+                        patient.setDateOfBirth(dob);
+                    } catch (ParseException e) {
+                        System.out.println("Invalid date format. Please try again.");
+                    }
+                    break;
+                case 5:
+                    System.out.println("Enter new Phone Number:");
+                    patient.setPhoneNumber(scanner.nextLine());
+                    break;
+                case 6:
+                    System.out.println("Enter new Home Address:");
+                    patient.setHomeAddress(scanner.nextLine());
+                    break;
+                case 7:
+                    // Save the changes and exit
+                    patients.updatePatient(patientID, patient); // Assuming updatePatient() exists in PatientList
+                    System.out.println("Patient updated successfully!");
+                    editing = false;
+                    break;
+                case 8:
+                    // Cancel the editing process
+                    System.out.println("Edit cancelled. Returning to the previous menu.");
+                    editing = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please select again.");
+            }
+        }
     }
 
     //Menu option 2: Add test

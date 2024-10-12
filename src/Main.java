@@ -30,6 +30,7 @@ public class Main {
     }
 
     private static boolean login() {
+        System.out.println("Login Screen:");
         System.out.println("Enter User ID:");
         int id = Integer.parseInt(scanner.nextLine());  // Read user ID
         System.out.println("Enter Password:");
