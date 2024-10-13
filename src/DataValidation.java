@@ -1,7 +1,55 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DataValidation {
 
+    public boolean validateName(String name) {
+        return name != null && name.matches("[a-zA-Z]+");
+    }
+
+    //DOB Validation
+    public boolean validateDate(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false);  // Strict date checking
+            Date parsedDate = sdf.parse(date);
+
+            // Check if the date is in the future
+            if (parsedDate.after(new Date())) {
+                System.out.println("The date cannot be in the future.");
+                return false;
+            }
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    // Test Time Validation
+    public boolean validateDateTime(String dateTime) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            sdf.setLenient(false);  // Strict date and time checking
+            Date parsedDateTime = sdf.parse(dateTime);
+
+            // Check if the date and time are in the future
+            if (parsedDateTime.after(new Date())) {
+                System.out.println("The date and time cannot be in the future.");
+                return false;
+            }
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+    public boolean validatePhoneNumber(String phoneNumber) {
+        return phoneNumber != null && phoneNumber.matches("\\d{10}");
+    }
+
+    public boolean validateAddress(String address) {
+        return address != null && !address.trim().isEmpty();
+    }
     // Validate if a string is not null and not empty
     public static boolean isValidString(String input) {
         return input != null && !input.trim().isEmpty();

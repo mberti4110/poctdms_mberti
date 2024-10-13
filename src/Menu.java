@@ -138,33 +138,90 @@ public class Menu {
 
     //Patient Menu option: Add Patient
     private static void addPatient() {
-        System.out.println("Select input method: 1 for manual, 2 for file");
-        int inputMethod = scanner.nextInt();
+        int inputMethod = 0;
+        boolean validInput = false;
+
+        //input validation
+        while (!validInput) {
+            System.out.println("Select input method: 1 for manual, 2 for file");
+            if (scanner.hasNextInt()) {
+                inputMethod = scanner.nextInt();
+                if (inputMethod == 1 || inputMethod == 2) {
+                    validInput = true;  // Exit the loop once a valid input is received
+                } else {
+                    System.out.println("Invalid option. Please enter 1 for manual or 2 for file.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.next();  // Consume the invalid input
+            }
+        }
         if (inputMethod == 1) {
             // Manual entry
-            try {
-                System.out.println("Enter first name:");
-                String firstName = scanner.next();
+            // Assuming DataValidation class is created with appropriate validation methods
+            DataValidation validator = new DataValidation();
 
+            try {
+                // Enter first name
+                String firstName = "";
+                while (firstName.isEmpty() || !validator.validateName(firstName)) {
+                    System.out.println("Enter first name:");
+                    firstName = scanner.next();
+                    if (!validator.validateName(firstName)) {
+                        System.out.println("Invalid name. Please enter a valid first name.");
+                    }
+                }
+
+                // Enter middle name
                 System.out.println("Enter middle name (or type 'none' if no middle name):");
                 String middleName = scanner.next();
                 middleName = "none".equalsIgnoreCase(middleName) ? null : middleName;
 
-                System.out.println("Enter last name:");
-                String lastName = scanner.next();
+                // Enter last name
+                String lastName = "";
+                while (lastName.isEmpty() || !validator.validateName(lastName)) {
+                    System.out.println("Enter last name:");
+                    lastName = scanner.next();
+                    if (!validator.validateName(lastName)) {
+                        System.out.println("Invalid name. Please enter a valid last name.");
+                    }
+                }
 
-                System.out.println("Enter date of birth (format YYYY-MM-DD):");
-                String dateInput = scanner.next();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date dateOfBirth = sdf.parse(dateInput);
+                // Enter date of birth
+                Date dateOfBirth = null;
+                while (dateOfBirth == null) {
+                    System.out.println("Enter date of birth (format YYYY-MM-DD):");
+                    String dateInput = scanner.next();
+                    if (!validator.validateDate(dateInput)) {
+                        System.out.println("Invalid date format. Please enter a valid date (YYYY-MM-DD).");
+                    } else {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        dateOfBirth = sdf.parse(dateInput);
+                    }
+                }
 
-                System.out.println("Enter phone number:");
-                String phoneNumber = scanner.next();
+                // Enter phone number
+                String phoneNumber = "";
+                while (phoneNumber.isEmpty() || !validator.validatePhoneNumber(phoneNumber)) {
+                    System.out.println("Enter phone number:");
+                    phoneNumber = scanner.next();
+                    if (!validator.validatePhoneNumber(phoneNumber)) {
+                        System.out.println("Invalid phone number. Please enter a valid phone number.");
+                    }
+                }
 
-                System.out.println("Enter home address:");
-                scanner.nextLine();
-                String homeAddress = scanner.nextLine();
+                // Enter home address
+                String homeAddress = "";
+                while (homeAddress.isEmpty() || !validator.validateAddress(homeAddress)) {
+                    System.out.println("Enter home address:");
+                    scanner.nextLine();  // Consume the leftover newline
+                    homeAddress = scanner.nextLine();
+                    if (!validator.validateAddress(homeAddress)) {
+                        System.out.println("Invalid address. Please enter a valid home address.");
+                    }
+                }
 
+                // Create the patient object if all inputs are valid
                 Patient patient = new PatientBuilder(lastName, firstName)
                         .patientMiddleName(middleName)
                         .dateOfBirth(dateOfBirth)
@@ -174,6 +231,7 @@ public class Menu {
 
                 patients.addPatient(patient);
                 System.out.println("Patient added successfully!");
+
             } catch (Exception e) {
                 System.out.println("Failed to add patient: " + e.getMessage());
                 scanner.nextLine();  // Consume buffer to clear out bad input
