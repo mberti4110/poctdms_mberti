@@ -10,6 +10,10 @@ public class GlucoseTest extends Test {
 
     public int getGlucoseResult() { return glucoseResult; }
 
+    public void setGlucoseResult(int glucoseResult) {
+        this.glucoseResult = glucoseResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\nGlucose Result: " + glucoseResult + " mg/dL";

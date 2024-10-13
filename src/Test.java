@@ -27,6 +27,34 @@ public class Test {
     public int getOperatorID() { return operatorID; }
     public Date getTestDateTime() { return testDateTime; }
 
+    public void setTestID(int testID) {
+        this.testID = testID;
+    }
+
+    public void setPatientID(int patientID) {
+        this.patientID = patientID;
+    }
+
+    public void setTestPanel(String testPanel) {
+        this.testPanel = testPanel;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public void setDeviceID(String deviceID) {
+        this.deviceID = deviceID;
+    }
+
+    public void setOperatorID(int operatorID) {
+        this.operatorID = operatorID;
+    }
+
+    public void setTestDateTime(Date testDateTime) {
+        this.testDateTime = testDateTime;
+    }
+
     @Override
     public String toString() {
         return "Test ID: " + testID +

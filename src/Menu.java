@@ -112,7 +112,7 @@ public class Menu {
                     addTest();
                     break;
                 case 2:
-                    //editTest();
+                    TestList.editTest(scanner, tests);
                     break;
                 case 3:
                     //deleteTest();
