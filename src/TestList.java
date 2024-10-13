@@ -23,6 +23,7 @@ public class TestList {
         testList.remove(testID);
     }
 
+    //Test Menu Option: Edit TEst
     public static void editTest(Scanner scanner, TestList tests) {
         System.out.println("Enter the Test ID to edit:");
         int testID = Integer.parseInt(scanner.nextLine()); // Getting test ID from user
@@ -167,7 +168,6 @@ public class TestList {
     public void updateTest(int testID, Test test) {
         testList.put(testID, test);
     }
-
 
     public Test getTest(int testID) {
         return testList.get(testID);

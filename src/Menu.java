@@ -115,7 +115,7 @@ public class Menu {
                     TestList.editTest(scanner, tests);
                     break;
                 case 3:
-                    //deleteTest();
+                    deleteTest();
                     break;
                 case 4:
                     listTests();
@@ -329,6 +329,21 @@ public class Menu {
             System.out.println("Test added successfully!");
         } catch (IllegalArgumentException e) {
             System.out.println("Error creating test: " + e.getMessage());
+        }
+    }
+
+    //Test Menu Option: Delete test
+    public void deleteTest() {
+        System.out.println("Enter Test ID to delete:");
+        int testID = scanner.nextInt();
+        scanner.nextLine();
+
+        // Check if the test exists
+        if (tests.getTest(testID) != null) {
+            tests.removeTest(testID);
+            System.out.println("Test with ID " + testID + " has been successfully deleted.");
+        } else {
+            System.out.println("No test found with ID: " + testID + ". Please try again.");
         }
     }
 
