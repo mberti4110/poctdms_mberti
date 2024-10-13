@@ -7,7 +7,7 @@ public class Main {
 
     //User Login. To change with database incorporation.
     private static Map<Integer, User> users = new HashMap<>();
-    private static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
     private static boolean isAuthenticated = false;
 
     static {

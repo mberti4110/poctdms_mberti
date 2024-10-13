@@ -14,6 +14,16 @@ public class DataValidation {
         }
     }
 
+    // Validate if the input is a float
+    public boolean isFloat(String input) {
+        try {
+            Float.parseFloat(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public boolean validateName(String name) {
         return name != null && name.matches("[a-zA-Z]+");
     }
@@ -37,19 +47,64 @@ public class DataValidation {
     }
 
     // Test Time Validation
-    public boolean validateDateTime(String dateTime) {
+    public boolean validateTestDateTime(String input) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        sdf.setLenient(false);
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            sdf.setLenient(false);  // Strict date and time checking
-            Date parsedDateTime = sdf.parse(dateTime);
-
-            // Check if the date and time are in the future
-            if (parsedDateTime.after(new Date())) {
-                System.out.println("The date and time cannot be in the future.");
-                return false;
-            }
-            return true;
+            Date testDateTime = sdf.parse(input);
+            return validateTestDateTimeRange(testDateTime);  // Validate test date range
         } catch (ParseException e) {
+            return false;
+        }
+    }
+    // Check if the test date/time is within the valid range (not in the future or before 2012)
+    private boolean validateTestDateTimeRange(Date testDateTime) throws ParseException {
+        Date currentDate = new Date();
+        Date earliestDate = new SimpleDateFormat("yyyy-MM-dd").parse("2012-01-01");
+        if (testDateTime.after(currentDate)) {
+            System.out.println("The date cannot be in the future. Please enter a correct date.");
+            return false;
+        }
+        if (testDateTime.before(earliestDate)) {
+            System.out.println("The date cannot be earlier than January 1, 2012. Please enter a correct date.");
+            return false;
+        }
+        return true;
+    }
+
+    // Validate result within a range for float and integer, and confirm if the user wants to proceed with an out-of-range value
+    public boolean validateAndConfirmResult(String label, String resultInput, double min, double max, boolean isInteger) {
+        try {
+            double result;
+            if (isInteger) {
+                result = Integer.parseInt(resultInput);
+            } else {
+                result = Float.parseFloat(resultInput);
+            }
+
+            if (result < min || result > max) {
+                System.out.println(label + " is out of the normal range (" + min + " - " + max + "). Would you like to proceed? (y/n)");
+
+                String confirm;
+                boolean validResponse = false;
+
+                // Loop until valid input is received
+                while (!validResponse) {
+                    confirm = Main.scanner.nextLine().trim().toLowerCase();
+
+                    if (confirm.equals("y")) {
+                        return true;  // User confirms to proceed
+                    } else if (confirm.equals("n")) {
+                        return false; // User does not want to proceed
+                    } else {
+                        System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
+                    }
+                }
+            }
+
+            return true; // Result is within range
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number for " + label + ".");
             return false;
         }
     }
