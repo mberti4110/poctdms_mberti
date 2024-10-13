@@ -31,16 +31,33 @@ public class Main {
 
     private static boolean login() {
         System.out.println("Login Screen:");
-        System.out.println("Enter User ID:");
-        int id = Integer.parseInt(scanner.nextLine());  // Read user ID
-        System.out.println("Enter Password:");
-        String password = scanner.nextLine();  // Read password
 
-        User user = users.get(id);
-        if (user != null && user.getOperatorPassword().equals(password)) {
-            System.out.println("Login successful. Welcome, " + user.getOperatorFirstName() + "!");
-            return true;
+        while (true) {
+            System.out.println("Enter User ID:");
+            String userIdInput = scanner.nextLine().trim();
+
+            int id = 0; // Initialize with a default or invalid ID
+
+            // Validate and parse the User ID
+            try {
+                id = Integer.parseInt(userIdInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid User ID entered. Please enter a valid integer.");
+                continue; // Skip the rest of the loop and prompt again
+            }
+
+            System.out.println("Enter Password:");
+            String password = scanner.nextLine(); // Read password
+
+            // Authenticate user
+            User user = users.get(id);
+            if (user != null && user.getOperatorPassword().equals(password)) {
+                System.out.println("Login successful. Welcome, " + user.getOperatorFirstName() + "!");
+                return true; // Successful login
+            } else {
+                System.out.println("Invalid credentials, please try again.");
+                // If credentials are invalid, restart the process without exiting
+            }
         }
-        return false;
     }
 }
