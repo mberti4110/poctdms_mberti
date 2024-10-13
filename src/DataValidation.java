@@ -4,12 +4,22 @@ import java.util.Date;
 
 public class DataValidation {
 
+    // Method to validate if a string can be parsed into an integer
+    public static boolean isInteger(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public boolean validateName(String name) {
         return name != null && name.matches("[a-zA-Z]+");
     }
 
     //DOB Validation
-    public boolean validateDate(String date) {
+    public static boolean validateDate(String date) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setLenient(false);  // Strict date checking

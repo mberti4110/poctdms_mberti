@@ -250,45 +250,86 @@ public class Menu {
     //Menu option 1: Add patient via file
     private static void readPatientFromFile(String filePath) throws IOException, ParseException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        String line;
+        DataValidation validator = new DataValidation();  // Instantiate the DataValidation class
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);  // Strict date validation
 
+        String line;
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(",");
-            // File format: LastName, MiddleName, FirstName,MiddleName,DOB,Phone,Address
+
+            // Check if the line has the correct number of fields
             if (parts.length != 6) {
                 System.out.println("Skipping malformed line: " + line);
                 continue;
             }
+
             String lastName = parts[0].trim();
             String firstName = parts[1].trim();
             String middleName = parts[2].trim().equals("none") ? null : parts[2].trim();
-            Date dateOfBirth = sdf.parse(parts[3].trim());
+            String dateOfBirthStr = parts[3].trim();
             String phoneNumber = parts[4].trim();
             String homeAddress = parts[5].trim();
 
+            // Validate each field
+            if (!validator.validateName(firstName) || !validator.validateName(lastName)) {
+                System.out.println("Invalid name. Skipping line: " + line);
+                continue;
+            }
+
+            if (!validator.validatePhoneNumber(phoneNumber)) {
+                System.out.println("Invalid phone number. Skipping line: " + line);
+                continue;
+            }
+
+            if (!validator.validateAddress(homeAddress)) {
+                System.out.println("Invalid address. Skipping line: " + line);
+                continue;
+            }
+
+            // Validate date of birth
+            Date dateOfBirth;
+            if (!validator.validateDate(dateOfBirthStr)) {
+                System.out.println("Invalid date of birth. Skipping line: " + line);
+                continue;
+            } else {
+                dateOfBirth = sdf.parse(dateOfBirthStr);  // Parse valid date
+            }
+
+            // If all validations pass, create the Patient object
             Patient patient = new PatientBuilder(lastName, firstName)
                     .patientMiddleName(middleName)
                     .dateOfBirth(dateOfBirth)
                     .phoneNumber(phoneNumber)
                     .homeAddress(homeAddress)
                     .build();
-            patients.addPatient(patient);
+
+            patients.addPatient(patient);  // Add the patient if valid
         }
+
         reader.close();
         System.out.println("Patients added successfully from file!");
         // Clear scanner
         scanner.nextLine();
-
     }
 
     //Patient Menu option: Edit patient
     private static void editPatient(Scanner scanner) {
         System.out.println("Enter the Patient ID to edit:");
-        int patientID = Integer.parseInt(scanner.nextLine());
+
+        // Validate if the input is an integer
+        String patientIDInput = scanner.nextLine();
+        DataValidation validator = new DataValidation();
+
+        while (!validator.isInteger(patientIDInput)) {
+            System.out.println("Invalid ID format. Please enter a valid Patient ID:");
+            patientIDInput = scanner.nextLine();
+        }
+
+        int patientID = Integer.parseInt(patientIDInput);
 
         // Check if patient exists
-        Patient patient = patients.getPatientById(patientID); // Assuming getPatientById() exists
+        Patient patient = patients.getPatientById(patientID);
         if (patient == null) {
             System.out.println("Patient not found with ID: " + patientID);
             return;
@@ -308,50 +349,106 @@ public class Menu {
             System.out.println("7. Save & Exit");
             System.out.println("8. Cancel");
 
-            int choice = Integer.parseInt(scanner.nextLine());
+            String choiceInput = scanner.nextLine();
+            while (!validator.isInteger(choiceInput)) {
+                System.out.println("Invalid choice. Please enter a valid number:");
+                choiceInput = scanner.nextLine();
+            }
+            int choice = Integer.parseInt(choiceInput);
+
             switch (choice) {
                 case 1:
-                    System.out.println("Enter new Last Name:");
-                    patient.setPatientLastName(scanner.nextLine());
+                    // Last Name
+                    String lastName = "";
+                    while (lastName.isEmpty() || !validator.validateName(lastName)) {
+                        System.out.println("Enter new Last Name:");
+                        lastName = scanner.nextLine();
+                        if (!validator.validateName(lastName)) {
+                            System.out.println("Invalid name. Please enter a valid last name.");
+                        }
+                    }
+                    patient.setPatientLastName(lastName);
                     break;
+
                 case 2:
-                    System.out.println("Enter new First Name:");
-                    patient.setPatientFirstName(scanner.nextLine());
+                    // First Name
+                    String firstName = "";
+                    while (firstName.isEmpty() || !validator.validateName(firstName)) {
+                        System.out.println("Enter new First Name:");
+                        firstName = scanner.nextLine();
+                        if (!validator.validateName(firstName)) {
+                            System.out.println("Invalid name. Please enter a valid first name.");
+                        }
+                    }
+                    patient.setPatientFirstName(firstName);
                     break;
+
                 case 3:
+                    // Middle Name
                     System.out.println("Enter new Middle Name (or type 'none' if no middle name):");
                     String middleName = scanner.nextLine();
                     patient.setPatientMiddleName("none".equalsIgnoreCase(middleName) ? null : middleName);
                     break;
+
                 case 4:
-                    System.out.println("Enter new Date of Birth (format YYYY-MM-DD):");
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        Date dob = sdf.parse(scanner.nextLine());
-                        patient.setDateOfBirth(dob);
-                    } catch (ParseException e) {
-                        System.out.println("Invalid date format. Please try again.");
+                    // Date of Birth
+                    Date dateOfBirth = null;
+                    while (dateOfBirth == null) {
+                        System.out.println("Enter new Date of Birth (format YYYY-MM-DD):");
+                        String dateInput = scanner.nextLine();
+                        if (!validator.validateDate(dateInput)) {
+                            System.out.println("Invalid date format. Please enter a valid date (YYYY-MM-DD).");
+                        } else {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            try {
+                                dateOfBirth = sdf.parse(dateInput);
+                            } catch (ParseException e) {
+                                System.out.println("Invalid date format.");
+                            }
+                        }
                     }
+                    patient.setDateOfBirth(dateOfBirth);
                     break;
+
                 case 5:
-                    System.out.println("Enter new Phone Number:");
-                    patient.setPhoneNumber(scanner.nextLine());
+                    // Phone Number
+                    String phoneNumber = "";
+                    while (phoneNumber.isEmpty() || !validator.validatePhoneNumber(phoneNumber)) {
+                        System.out.println("Enter new Phone Number:");
+                        phoneNumber = scanner.nextLine();
+                        if (!validator.validatePhoneNumber(phoneNumber)) {
+                            System.out.println("Invalid phone number. Please enter a valid phone number.");
+                        }
+                    }
+                    patient.setPhoneNumber(phoneNumber);
                     break;
+
                 case 6:
-                    System.out.println("Enter new Home Address:");
-                    patient.setHomeAddress(scanner.nextLine());
+                    // Home Address
+                    String homeAddress = "";
+                    while (homeAddress.isEmpty() || !validator.validateAddress(homeAddress)) {
+                        System.out.println("Enter new Home Address:");
+                        homeAddress = scanner.nextLine();
+                        if (!validator.validateAddress(homeAddress)) {
+                            System.out.println("Invalid address. Please enter a valid home address.");
+                        }
+                    }
+                    patient.setHomeAddress(homeAddress);
                     break;
+
                 case 7:
-                    // Save the changes and exit
-                    patients.updatePatient(patientID, patient); // Assuming updatePatient() exists in PatientList
+                    // Save & Exit
+                    patients.updatePatient(patientID, patient);
                     System.out.println("Patient updated successfully!");
                     editing = false;
                     break;
+
                 case 8:
-                    // Cancel the editing process
+                    // Cancel
                     System.out.println("Edit cancelled. Returning to the previous menu.");
                     editing = false;
                     break;
+
                 default:
                     System.out.println("Invalid choice. Please select again.");
             }
