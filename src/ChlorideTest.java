@@ -10,6 +10,10 @@ public class ChlorideTest extends Test {
 
     public int getChlorideResult() { return chlorideResult; }
 
+    public void setChlorideResult(int chlorideResult) {
+        this.chlorideResult = chlorideResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\nChloride Result: " + chlorideResult + " mEq/L";

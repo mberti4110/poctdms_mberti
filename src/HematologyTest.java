@@ -18,6 +18,14 @@ public class HematologyTest extends Test {
         return hemoglobinResult;
     }
 
+    public void setHematocritResult(int hematocritResult) {
+        this.hematocritResult = hematocritResult;
+    }
+
+    public void setHemoglobinResult(float hemoglobinResult) {
+        this.hemoglobinResult = hemoglobinResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() +

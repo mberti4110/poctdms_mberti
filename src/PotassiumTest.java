@@ -10,6 +10,10 @@ public class PotassiumTest extends Test {
 
     public float getPotassiumResult() { return potassiumResult; }
 
+    public void setPotassiumResult(float potassiumResult) {
+        this.potassiumResult = potassiumResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\nPotassium Result: " + potassiumResult + " mmol/L";

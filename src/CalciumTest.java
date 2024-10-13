@@ -10,6 +10,10 @@ public class CalciumTest extends Test {
 
     public float getCalciumResult() { return calciumResult; }
 
+    public void setCalciumResult(float calciumResult) {
+        this.calciumResult = calciumResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\nCalcium Result: " + calciumResult + " mg/dL";

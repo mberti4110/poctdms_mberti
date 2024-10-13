@@ -19,6 +19,22 @@ public class ElectrolyteTest extends Test {
     public float getCalciumResult() { return calciumResult; }
     public int getChlorideResult() { return chlorideResult; }
 
+    public void setSodiumResult(int sodiumResult) {
+        this.sodiumResult = sodiumResult;
+    }
+
+    public void setPotassiumResult(float potassiumResult) {
+        this.potassiumResult = potassiumResult;
+    }
+
+    public void setCalciumResult(float calciumResult) {
+        this.calciumResult = calciumResult;
+    }
+
+    public void setChlorideResult(int chlorideResult) {
+        this.chlorideResult = chlorideResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\nSodium Result: " + sodiumResult + " mmol/L" +

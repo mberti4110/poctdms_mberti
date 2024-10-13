@@ -10,6 +10,10 @@ public class SodiumTest extends Test {
 
     public int getSodiumResult() { return sodiumResult; }
 
+    public void setSodiumResult(int sodiumResult) {
+        this.sodiumResult = sodiumResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\nSodium Result: " + sodiumResult + " mmol/L";

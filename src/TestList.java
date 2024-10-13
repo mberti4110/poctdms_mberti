@@ -97,8 +97,71 @@ public class TestList {
             System.out.println("Enter new Glucose Result:");
             int glucoseResult = Integer.parseInt(scanner.nextLine());
             ((GlucoseTest) test).setGlucoseResult(glucoseResult);
+        } else if (test instanceof SodiumTest) {
+            System.out.println("Enter new Sodium Result:");
+            int sodiumResult = Integer.parseInt(scanner.nextLine());
+            ((SodiumTest) test).setSodiumResult(sodiumResult);
+        } else if (test instanceof PotassiumTest) {
+            System.out.println("Enter new Potassium Result:");
+            float potassiumResult = Float.parseFloat(scanner.nextLine());
+            ((PotassiumTest) test).setPotassiumResult(potassiumResult);
+        } else if (test instanceof CalciumTest) {
+            System.out.println("Enter new Calcium Result:");
+            float calciumResult = Float.parseFloat(scanner.nextLine());
+            ((CalciumTest) test).setCalciumResult(calciumResult);
+        } else if (test instanceof ChlorideTest) {
+            System.out.println("Enter new Chloride Result:");
+            int chlorideResult = Integer.parseInt(scanner.nextLine());
+            ((ChlorideTest) test).setChlorideResult(chlorideResult);
+        } else if (test instanceof LacticAcidTest) {
+            System.out.println("Enter new Lactic Acid Result:");
+            float lacticAcidResult = Float.parseFloat(scanner.nextLine());
+            ((LacticAcidTest) test).setLacticAcidResult(lacticAcidResult);
+        } else if (test instanceof ElectrolyteTest) {
+            System.out.println("Select the Electrolyte component to edit:");
+            System.out.println("1. Sodium");
+            System.out.println("2. Potassium");
+            System.out.println("3. Calcium");
+            System.out.println("4. Chloride");
+            int electrolyteChoice = Integer.parseInt(scanner.nextLine());
+            switch (electrolyteChoice) {
+                case 1:
+                    System.out.println("Enter new Sodium Result:");
+                    ((ElectrolyteTest) test).setSodiumResult(Integer.parseInt(scanner.nextLine()));
+                    break;
+                case 2:
+                    System.out.println("Enter new Potassium Result:");
+                    ((ElectrolyteTest) test).setPotassiumResult(Float.parseFloat(scanner.nextLine()));
+                    break;
+                case 3:
+                    System.out.println("Enter new Calcium Result:");
+                    ((ElectrolyteTest) test).setCalciumResult(Float.parseFloat(scanner.nextLine()));
+                    break;
+                case 4:
+                    System.out.println("Enter new Chloride Result:");
+                    ((ElectrolyteTest) test).setChlorideResult(Integer.parseInt(scanner.nextLine()));
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } else if (test instanceof HematologyTest) {
+            System.out.println("Select the Hematology component to edit:");
+            System.out.println("1. Hematocrit");
+            System.out.println("2. Hemoglobin");
+            int hematologyChoice = Integer.parseInt(scanner.nextLine());
+            switch (hematologyChoice) {
+                case 1:
+                    System.out.println("Enter new Hematocrit Result (%):");
+                    ((HematologyTest) test).setHematocritResult(Integer.parseInt(scanner.nextLine()));
+                    break;
+                case 2:
+                    System.out.println("Enter new Hemoglobin Result (g/dL):");
+                    ((HematologyTest) test).setHemoglobinResult(Float.parseFloat(scanner.nextLine()));
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
         }
-
     }
 
     public void updateTest(int testID, Test test) {

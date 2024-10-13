@@ -10,6 +10,10 @@ public class LacticAcidTest extends Test {
 
     public float getLacticAcidResult() { return lacticAcidResult; }
 
+    public void setLacticAcidResult(float lacticAcidResult) {
+        this.lacticAcidResult = lacticAcidResult;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\nLactic Acid Result: " + lacticAcidResult + " mmol/L";
