@@ -43,11 +43,17 @@ public class Menu {
     }
 
     public int selectOption() {
-        System.out.print("Select an option: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
-        return choice;
+        while (true) {
+            System.out.print("Select an option: ");
+            String input = scanner.nextLine();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a numeric value.");
+            }
+        }
     }
+
 
     // Main Menu Loop
     public void mainMenuLoop() {
