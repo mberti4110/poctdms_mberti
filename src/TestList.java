@@ -25,8 +25,21 @@ public class TestList {
 
     //Test Menu Option: Edit TEst
     public static void editTest(Scanner scanner, TestList tests) {
+        DataValidation validator = new DataValidation(); // Initialize your validation class
+
         System.out.println("Enter the Test ID to edit:");
-        int testID = Integer.parseInt(scanner.nextLine()); // Getting test ID from user
+        String inputTestID = scanner.nextLine();
+        int testID = -1;
+
+        // Error checking for Test ID
+        while (testID == -1) {
+            if (validator.isInteger(inputTestID)) {
+                testID = Integer.parseInt(inputTestID);
+            } else {
+                System.out.println("Invalid Test ID. Please enter a valid integer:");
+                inputTestID = scanner.nextLine();
+            }
+        }
 
         // Check if test exists
         Test test = tests.getTest(testID);
@@ -48,45 +61,82 @@ public class TestList {
             System.out.println("6. Save & Exit");
             System.out.println("7. Cancel");
 
-            int choice = Integer.parseInt(scanner.nextLine());
+            String inputChoice = scanner.nextLine();
+            int choice = -1;
+
+            // Validate menu option
+            while (choice == -1) {
+                if (validator.isInteger(inputChoice)) {
+                    choice = Integer.parseInt(inputChoice);
+                } else {
+                    System.out.println("Invalid option. Please enter a valid number:");
+                    inputChoice = scanner.nextLine();
+                }
+            }
+
             switch (choice) {
                 case 1:
                     System.out.println("Enter new Device Type:");
                     test.setDeviceType(scanner.nextLine());
                     break;
+
                 case 2:
                     System.out.println("Enter new Device Serial Number:");
                     test.setDeviceID(scanner.nextLine());
                     break;
+
                 case 3:
                     System.out.println("Enter new Operator ID:");
-                    test.setOperatorID(Integer.parseInt(scanner.nextLine()));
+                    String operatorIDInput = scanner.nextLine();
+                    int operatorID = -1;
+
+                    // Error checking for Operator ID
+                    while (operatorID == -1) {
+                        if (validator.isInteger(operatorIDInput)) {
+                            operatorID = Integer.parseInt(operatorIDInput);
+                        } else {
+                            System.out.println("Invalid Operator ID. Please enter a valid integer:");
+                            operatorIDInput = scanner.nextLine();
+                        }
+                    }
+                    test.setOperatorID(operatorID);
                     break;
+
                 case 4:
                     System.out.println("Enter new Test Date and Time (format YYYY-MM-DD HH:MM):");
+                    String dateTimeInput = scanner.nextLine();
+                    while (!validator.validateTestDateTime(dateTimeInput)) {
+                        System.out.println("Invalid date and time format. Please enter the date and time in the format YYYY-MM-DD HH:MM:");
+                        dateTimeInput = scanner.nextLine();
+                    }
+
                     try {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        Date testDateTime = sdf.parse(scanner.nextLine());
+                        Date testDateTime = sdf.parse(dateTimeInput);
                         test.setTestDateTime(testDateTime);
                     } catch (ParseException e) {
-                        System.out.println("Invalid date format. Please try again.");
+                        System.out.println("Error parsing date. Please try again.");
                     }
                     break;
+
                 case 5:
                     System.out.println("Enter new Test Result:");
                     updateTestResult(scanner, test);
                     break;
+
                 case 6:
                     // Save the changes and exit
-                    tests.updateTest(testID, test); // Assuming updateTest() exists in TestList
+                    tests.updateTest(testID, test);
                     System.out.println("Test updated successfully!");
                     editing = false;
                     break;
+
                 case 7:
                     // Cancel the editing process
                     System.out.println("Edit cancelled. Returning to the previous menu.");
                     editing = false;
                     break;
+
                 default:
                     System.out.println("Invalid choice. Please select again.");
             }
@@ -94,30 +144,68 @@ public class TestList {
     }
 
     private static void updateTestResult(Scanner scanner, Test test) {
+        DataValidation validator = new DataValidation();
+
         if (test instanceof GlucoseTest) {
             System.out.println("Enter new Glucose Result:");
-            int glucoseResult = Integer.parseInt(scanner.nextLine());
+            String glucoseInput = scanner.nextLine();
+            while (!validator.validateAndConfirmResult("Glucose", glucoseInput, 70, 200, true)) {
+                System.out.println("Invalid input or out of range. Enter new Glucose Result:");
+                glucoseInput = scanner.nextLine();
+            }
+            int glucoseResult = Integer.parseInt(glucoseInput);
             ((GlucoseTest) test).setGlucoseResult(glucoseResult);
+
         } else if (test instanceof SodiumTest) {
             System.out.println("Enter new Sodium Result:");
-            int sodiumResult = Integer.parseInt(scanner.nextLine());
+            String sodiumInput = scanner.nextLine();
+            while (!validator.validateAndConfirmResult("Sodium", sodiumInput, 135, 145, true)) {
+                System.out.println("Invalid input or out of range. Enter new Sodium Result:");
+                sodiumInput = scanner.nextLine();
+            }
+            int sodiumResult = Integer.parseInt(sodiumInput);
             ((SodiumTest) test).setSodiumResult(sodiumResult);
+
         } else if (test instanceof PotassiumTest) {
             System.out.println("Enter new Potassium Result:");
-            float potassiumResult = Float.parseFloat(scanner.nextLine());
+            String potassiumInput = scanner.nextLine();
+            while (!validator.validateAndConfirmResult("Potassium", potassiumInput, 3.5, 5.1, false)) {
+                System.out.println("Invalid input or out of range. Enter new Potassium Result:");
+                potassiumInput = scanner.nextLine();
+            }
+            float potassiumResult = Float.parseFloat(potassiumInput);
             ((PotassiumTest) test).setPotassiumResult(potassiumResult);
+
         } else if (test instanceof CalciumTest) {
             System.out.println("Enter new Calcium Result:");
-            float calciumResult = Float.parseFloat(scanner.nextLine());
+            String calciumInput = scanner.nextLine();
+            while (!validator.validateAndConfirmResult("Calcium", calciumInput, 8.5, 10.2, false)) {
+                System.out.println("Invalid input or out of range. Enter new Calcium Result:");
+                calciumInput = scanner.nextLine();
+            }
+            float calciumResult = Float.parseFloat(calciumInput);
             ((CalciumTest) test).setCalciumResult(calciumResult);
+
         } else if (test instanceof ChlorideTest) {
             System.out.println("Enter new Chloride Result:");
-            int chlorideResult = Integer.parseInt(scanner.nextLine());
+            String chlorideInput = scanner.nextLine();
+            while (!validator.validateAndConfirmResult("Chloride", chlorideInput, 98, 106, true)) {
+                System.out.println("Invalid input or out of range. Enter new Chloride Result:");
+                chlorideInput = scanner.nextLine();
+            }
+            int chlorideResult = Integer.parseInt(chlorideInput);
             ((ChlorideTest) test).setChlorideResult(chlorideResult);
+
         } else if (test instanceof LacticAcidTest) {
             System.out.println("Enter new Lactic Acid Result:");
-            float lacticAcidResult = Float.parseFloat(scanner.nextLine());
+            String lacticAcidInput = scanner.nextLine();
+            while (!validator.validateAndConfirmResult("Lactic Acid", lacticAcidInput, 0.5, 2.2, false)) {
+                System.out.println("Invalid input or out of range. Enter new Lactic Acid Result:");
+                lacticAcidInput = scanner.nextLine();
+            }
+            float lacticAcidResult = Float.parseFloat(lacticAcidInput);
             ((LacticAcidTest) test).setLacticAcidResult(lacticAcidResult);
+
         } else if (test instanceof ElectrolyteTest) {
             System.out.println("Select the Electrolyte component to edit:");
             System.out.println("1. Sodium");
@@ -128,19 +216,39 @@ public class TestList {
             switch (electrolyteChoice) {
                 case 1:
                     System.out.println("Enter new Sodium Result:");
-                    ((ElectrolyteTest) test).setSodiumResult(Integer.parseInt(scanner.nextLine()));
+                    String sodiumInput = scanner.nextLine();
+                    while (!validator.validateAndConfirmResult("Sodium", sodiumInput, 135, 145, true)) {
+                        System.out.println("Invalid input or out of range. Enter new Sodium Result:");
+                        sodiumInput = scanner.nextLine();
+                    }
+                    ((ElectrolyteTest) test).setSodiumResult(Integer.parseInt(sodiumInput));
                     break;
                 case 2:
                     System.out.println("Enter new Potassium Result:");
-                    ((ElectrolyteTest) test).setPotassiumResult(Float.parseFloat(scanner.nextLine()));
+                    String potassiumInput = scanner.nextLine();
+                    while (!validator.validateAndConfirmResult("Potassium", potassiumInput, 3.5, 5.1, false)) {
+                        System.out.println("Invalid input or out of range. Enter new Potassium Result:");
+                        potassiumInput = scanner.nextLine();
+                    }
+                    ((ElectrolyteTest) test).setPotassiumResult(Float.parseFloat(potassiumInput));
                     break;
                 case 3:
                     System.out.println("Enter new Calcium Result:");
-                    ((ElectrolyteTest) test).setCalciumResult(Float.parseFloat(scanner.nextLine()));
+                    String calciumInput = scanner.nextLine();
+                    while (!validator.validateAndConfirmResult("Calcium", calciumInput, 8.5, 10.2, false)) {
+                        System.out.println("Invalid input or out of range. Enter new Calcium Result:");
+                        calciumInput = scanner.nextLine();
+                    }
+                    ((ElectrolyteTest) test).setCalciumResult(Float.parseFloat(calciumInput));
                     break;
                 case 4:
                     System.out.println("Enter new Chloride Result:");
-                    ((ElectrolyteTest) test).setChlorideResult(Integer.parseInt(scanner.nextLine()));
+                    String chlorideInput = scanner.nextLine();
+                    while (!validator.validateAndConfirmResult("Chloride", chlorideInput, 98, 106, true)) {
+                        System.out.println("Invalid input or out of range. Enter new Chloride Result:");
+                        chlorideInput = scanner.nextLine();
+                    }
+                    ((ElectrolyteTest) test).setChlorideResult(Integer.parseInt(chlorideInput));
                     break;
                 default:
                     System.out.println("Invalid choice.");
@@ -153,11 +261,21 @@ public class TestList {
             switch (hematologyChoice) {
                 case 1:
                     System.out.println("Enter new Hematocrit Result (%):");
-                    ((HematologyTest) test).setHematocritResult(Integer.parseInt(scanner.nextLine()));
+                    String hematocritInput = scanner.nextLine();
+                    while (!validator.validateAndConfirmResult("Hematocrit", hematocritInput, 38.3, 48.6, true)) {
+                        System.out.println("Invalid input or out of range. Enter new Hematocrit Result (%):");
+                        hematocritInput = scanner.nextLine();
+                    }
+                    ((HematologyTest) test).setHematocritResult(Integer.parseInt(hematocritInput));
                     break;
                 case 2:
                     System.out.println("Enter new Hemoglobin Result (g/dL):");
-                    ((HematologyTest) test).setHemoglobinResult(Float.parseFloat(scanner.nextLine()));
+                    String hemoglobinInput = scanner.nextLine();
+                    while (!validator.validateAndConfirmResult("Hemoglobin", hemoglobinInput, 13.2, 17.1, false)) {
+                        System.out.println("Invalid input or out of range. Enter new Hemoglobin Result (g/dL):");
+                        hemoglobinInput = scanner.nextLine();
+                    }
+                    ((HematologyTest) test).setHemoglobinResult(Float.parseFloat(hemoglobinInput));
                     break;
                 default:
                     System.out.println("Invalid choice.");
