@@ -1,3 +1,10 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * Test Class
+ * This class creates a test class and sets data requirements.
+ */
 import java.util.Date;
 
 public class Test {

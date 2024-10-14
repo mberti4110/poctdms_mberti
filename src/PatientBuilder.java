@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * PatientBuilder Class
+ * This class contains methods that collect patient data and create patient entries.
+ */
+
 import java.util.Date;
 
 public class PatientBuilder {

@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * PatientList Class
+ * This class creates a list of patients in which they will be stored in.
+ */
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;

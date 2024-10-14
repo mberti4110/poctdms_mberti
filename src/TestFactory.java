@@ -1,3 +1,10 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * TestFactory Class
+ * This class contains methods that collect test data and create test entries.
+ */
 import java.util.Date;
 import java.util.Map;
 

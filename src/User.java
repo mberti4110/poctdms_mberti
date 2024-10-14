@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * User Class
+ * This class creates a user class and sets data requirements.
+ */
+
 public class User {
     private int operatorID;
     private String operatorLastName;

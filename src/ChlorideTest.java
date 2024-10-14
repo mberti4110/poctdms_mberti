@@ -1,3 +1,10 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * ChlorideTest Class
+ * This class creates a test panel for the chloride tests.
+ */
 import java.util.Date;
 
 public class ChlorideTest extends Test {

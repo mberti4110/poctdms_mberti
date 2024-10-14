@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * Main Class
+ * This program will allow users to add Point of Care Tests to a database management system.
+ */
+
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
@@ -5,17 +13,19 @@ import java.util.Map;
 public class Main {
     private static Menu menu = new Menu();
 
-    //User Login. To change with database incorporation.
+    // User Login. To change with database incorporation.
     private static Map<Integer, User> users = new HashMap<>();
     public static Scanner scanner = new Scanner(System.in);
     private static boolean isAuthenticated = false;
 
+    // Built in users
     static {
         // Admin users
         users.put(1, new User(1, "Berti", "Monica", "password123"));
         users.put(2, new User(2, "Admin", "User", "admin123"));
     }
 
+    // Main method
     public static void main(String[] args) {
         // Display the login screen until the user is authenticated
         while (!isAuthenticated) {
@@ -29,6 +39,7 @@ public class Main {
         scanner.close(); // Close the scanner when the main loop ends
     }
 
+    // Login screen method
     private static boolean login() {
         System.out.println("Login Screen:");
 
@@ -36,7 +47,8 @@ public class Main {
             System.out.println("Enter User ID:");
             String userIdInput = scanner.nextLine().trim();
 
-            int id = 0; // Initialize with a default or invalid ID
+            // Initialize User ID
+            int id = 0;
 
             // Validate and parse the User ID
             try {

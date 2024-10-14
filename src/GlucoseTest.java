@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * Glucose Class
+ * This class creates a test panel for the glucose tests.
+ */
+
 import java.util.Date;
 
 public class GlucoseTest extends Test {

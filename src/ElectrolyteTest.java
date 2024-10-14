@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * DataValidation Class
+ * This class creates a test panel for the electrolyte tests.
+ */
+
 import java.util.Date;
 
 public class ElectrolyteTest extends Test {

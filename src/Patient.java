@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * Patient Class
+ * This class creates a patient class and sets data requirements.
+ */
+
 import java.util.Date;
 
 public class Patient {

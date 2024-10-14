@@ -1,3 +1,11 @@
+/* DMS Project: Point of Care
+ * October 13, 2024
+ * CEN 3024C
+ * Monica Berti
+ * TestList Class
+ * This class creates a list of tests in which they will be stored in.
+ */
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -143,6 +151,7 @@ public class TestList {
         }
     }
 
+    //Test Menu Option: Update Test Result
     private static void updateTestResult(Scanner scanner, Test test) {
         DataValidation validator = new DataValidation();
 
@@ -283,6 +292,7 @@ public class TestList {
         }
     }
 
+    //Test Menu Option: Update Test
     public void updateTest(int testID, Test test) {
         testList.put(testID, test);
     }
@@ -293,9 +303,5 @@ public class TestList {
 
     public Map<Integer, Test> listTests() {
         return testList;
-    }
-
-    public boolean hasDuplicateID(int testID) {
-        return testList.containsKey(testID);
     }
 }
