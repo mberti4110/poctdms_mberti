@@ -520,14 +520,22 @@ public class Menu {
     private static void collectTestDetails(Scanner scanner, Map<String, Object> parameters, TestType selectedType) {
         DataValidation validator = new DataValidation();
 
-        System.out.println("Enter Patient ID:");
-        int patientID = Integer.parseInt(scanner.nextLine());
-        // Verify patient exists
-        if (!patients.exists(patientID)) {
-            System.out.println("No patient found with ID: " + patientID + ". Please add the patient first.");
-            System.out.println("Test not added.");
-            parameters.clear();
-            return;
+        int patientID = -1;
+        boolean validPatientID = false;
+        while (!validPatientID) {
+            System.out.println("Enter Patient ID:");
+            String input = scanner.nextLine();
+            try {
+                patientID = Integer.parseInt(input);
+                if (!patients.exists(patientID)) {
+                    System.out.println("No patient found with ID: " + patientID + ". Please add the patient first.");
+                    testMenuLoop(); // Call test menu loop again
+                    return;
+                }
+                validPatientID = true; // Valid integer input
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer for Patient ID.");
+            }
         }
         parameters.put("patientID", patientID);
 
@@ -565,12 +573,10 @@ public class Menu {
             testDateTime = sdf.parse(dateTimeInput);
             parameters.put("testDateTime", testDateTime);
         } catch (ParseException e) {
-            System.out.println("Test not added.");
-            parameters.clear();
             return; // Error already handled in validateTestDateTime
         }
 
-        // Validate the test results based on type
+        // Check if the test is multi-component (e.g., Electrolytes or Hematology)
         if (selectedType == TestType.ELECTROLYTES) {
             System.out.println("Enter Sodium Result:");
             String sodiumResult = scanner.nextLine();
@@ -585,7 +591,6 @@ public class Menu {
             String potassiumResult = scanner.nextLine();
             if (!validator.validateAndConfirmResult("Potassium", potassiumResult, 3.5, 5.1, false)) {
                 System.out.println("Test not added.");
-                parameters.clear();
                 return;
             }
             parameters.put("potassiumResult", Float.parseFloat(potassiumResult));
@@ -629,32 +634,88 @@ public class Menu {
             parameters.put("hemoglobinResult", Float.parseFloat(hemoglobinResult));
 
         } else {
-            // General test result validation for other test types
+            // For individual test panels, only prompt for a single result
             System.out.println("Enter Test Result:");
             String result = scanner.nextLine();
-            if (selectedType == TestType.GLUCOSE || selectedType == TestType.SODIUM || selectedType == TestType.CHLORIDE) {
-                if (!validator.validateAndConfirmResult(selectedType.name(), result, 70, 200, true)) {
-                    System.out.println("Test not added.");
-                    parameters.clear();
+            switch (selectedType) {
+                case GLUCOSE:
+                    if (!validator.validateAndConfirmResult("Glucose", result, 70, 200, true)) {
+                        System.out.println("Test not added.");
+                        parameters.clear();
+                        return;
+                    }
+                    parameters.put("glucoseResult", Integer.parseInt(result));
+                    break;
+
+                case SODIUM:
+                    if (!validator.validateAndConfirmResult("Sodium", result, 135, 145, true)) {
+                        System.out.println("Test not added.");
+                        parameters.clear();
+                        return;
+                    }
+                    parameters.put("sodiumResult", Integer.parseInt(result));
+                    break;
+
+                case POTASSIUM:
+                    if (!validator.validateAndConfirmResult("Potassium", result, 3.5, 5.1, false)) {
+                        System.out.println("Test not added.");
+                        parameters.clear();
+                        return;
+                    }
+                    parameters.put("potassiumResult", Float.parseFloat(result));
+                    break;
+
+                case CALCIUM:
+                    if (!validator.validateAndConfirmResult("Calcium", result, 8.5, 10.2, false)) {
+                        System.out.println("Test not added.");
+                        parameters.clear();
+                        return;
+                    }
+                    parameters.put("calciumResult", Float.parseFloat(result));
+                    break;
+
+                case CHLORIDE:
+                    if (!validator.validateAndConfirmResult("Chloride", result, 98, 106, true)) {
+                        System.out.println("Test not added.");
+                        parameters.clear();
+                        return;
+                    }
+                    parameters.put("chlorideResult", Integer.parseInt(result));
+                    break;
+
+                case LACTICACID:
+                    if (!validator.validateAndConfirmResult("Lactic Acid", result, 0.5, 2.2, false)) {
+                        System.out.println("Test not added.");
+                        parameters.clear();
+                        return;
+                    }
+                    parameters.put("lacticAcidResult", Float.parseFloat(result));
+                    break;
+
+                default:
+                    System.out.println("Unknown test type.");
                     return;
-                }
-                parameters.put(selectedType.name().toLowerCase() + "Result", Integer.parseInt(result));
-            } else {
-                if (!validator.validateAndConfirmResult(selectedType.name(), result, 0.5, 10.0, false)) {
-                    System.out.println("Test not added.");
-                    parameters.clear();
-                    return;
-                }
-                parameters.put(selectedType.name().toLowerCase() + "Result", Float.parseFloat(result));
             }
         }
     }
 
     //Test Menu Option: Delete test
     public static void deleteTest() {
-        System.out.println("Enter Test ID to delete:");
-        int testID = scanner.nextInt();
-        scanner.nextLine();
+        int testID = -1;
+        boolean validTestID = false;
+
+        // Loop until a valid integer is entered for Test ID
+        while (!validTestID) {
+            System.out.println("Enter Test ID to delete:");
+            String input = scanner.nextLine();
+
+            try {
+                testID = Integer.parseInt(input);
+                validTestID = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer for Test ID.");
+            }
+        }
 
         // Check if the test exists
         if (tests.getTest(testID) != null) {
