@@ -125,6 +125,7 @@ public class DataValidation {
 
     // Method to validate address
     public boolean validateAddress(String address) {
-        return address != null && !address.trim().isEmpty();
+        // Allow letters, digits, spaces, and certain punctuation like commas, periods, apostrophes, etc.
+        return address.matches("[\\w\\s.,'-]+");
     }
 }
