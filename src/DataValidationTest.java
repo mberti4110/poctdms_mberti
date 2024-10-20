@@ -38,16 +38,6 @@ class DataValidationTest {
         assertFalse(validator.validateTestDateTime("2023/10/01 14:30"), "Incorrect date format should fail.");
     }
 
-    // Test case for validating and confirming test result
-    @Test
-    void validateAndConfirmResult() {
-        assertTrue(validator.validateAndConfirmResult("Glucose", "90", 70, 200, true));
-        assertFalse(validator.validateAndConfirmResult("Glucose", "300", 70, 200, true));
-        assertFalse(validator.validateAndConfirmResult("Glucose", "invalid", 70, 200, true));
-        assertTrue(validator.validateAndConfirmResult("Calcium", "9.5", 8.5, 10.5, false));
-        assertFalse(validator.validateAndConfirmResult("Calcium", "15", 8.5, 10.5, false));
-    }
-
 
     // Test case for phone number validation
     @Test

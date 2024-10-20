@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Menu {
+class Menu {
     private static Scanner scanner;
     private static PatientList patients = new PatientList();
     private static TestList tests = new TestList();
