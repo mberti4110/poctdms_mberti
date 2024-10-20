@@ -1,1 +1,4 @@
-"# poctdms_mberti" 
+Name: Monica Berti 
+Course: Software Development 1 (CEN 3024) 
+Point of Care DMS Assignment
+Assignment Description: The POCT Data Management System (DMS) is a console-based application developed to manage point-of-care test results, patient records, and related data for healthcare settings. The system facilitates the input, management, and retrieval of various test results such as glucose, electrolytes, sodium, calcium, hematology panels, and more. This tool is designed to streamline the workflow for handling patient test data, ensuring accurate data entry, validation, and retrieval.The project is structured to support multiple test types, each with unique result ranges and validation rules. Users can manually input or bulk-upload patient information, and update or delete test data through an easy-to-use menu-driven interface.
