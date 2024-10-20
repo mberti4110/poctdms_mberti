@@ -158,7 +158,7 @@ public class TestList {
         if (test instanceof GlucoseTest) {
             System.out.println("Enter new Glucose Result:");
             String glucoseInput = scanner.nextLine();
-            while (!validator.validateAndConfirmResult("Glucose", glucoseInput, 70, 200, true)) {
+            while (!validator.validateAndConfirmResult("Glucose", glucoseInput, 70, 100, true)) {
                 System.out.println("Invalid input or out of range. Enter new Glucose Result:");
                 glucoseInput = scanner.nextLine();
             }

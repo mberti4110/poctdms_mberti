@@ -496,25 +496,41 @@ public class Menu {
     }
     //Menu option 2: Add test
     private static void addTest() {
+        DataValidation validator = new DataValidation();
+
         System.out.println("Select Test Type:");
         for (TestType type : TestType.values()) {
             System.out.println((type.ordinal() + 1) + ". " + type);
         }
-        int choice = Integer.parseInt(scanner.nextLine()) - 1;
-        if (choice < 0 || choice >= TestType.values().length) {
-            System.out.println("Invalid test type selected. Please try again.");
-            return;
+
+        int choice = -1;
+        boolean validInput = false;
+
+        // Input validation loop for test type selection
+        while (!validInput) {
+            System.out.print("Please select a test option: ");
+            String input = scanner.nextLine();
+
+            // Check if the input is a valid integer
+            try {
+                choice = Integer.parseInt(input);
+                if (choice > 0 && choice <= TestType.values().length) {
+                    validInput = true; // Input is valid, break the loop
+                } else {
+                    System.out.println("Invalid test type selected. Please select a number between 1 and " + TestType.values().length);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
         }
+
+        choice = choice - 1;
         TestType selectedType = TestType.values()[choice];
 
         // Initialize parameters map
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("testID", TestList.getNextTestId()); // TestID is generated
         collectTestDetails(scanner, parameters, selectedType);
-
-        if (parameters.isEmpty()) {
-            return;  // Exit if no valid parameters were provided
-        }
 
         try {
             Test test = TestFactory.createTest(selectedType, parameters);
